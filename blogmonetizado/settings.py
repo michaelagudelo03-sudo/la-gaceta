@@ -5,6 +5,7 @@ Plataforma de artículos con monetización por publicidad (Google AdSense).
 
 from pathlib import Path
 from decouple import config, Csv
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -60,14 +61,18 @@ TEMPLATES = [
 WSGI_APPLICATION = 'blogmonetizado.wsgi.application'
 
 # --- Base de datos --------------------------------------------------------
-# Por defecto usa SQLite (sirve para empezar). En producción real, define
-# DATABASE_URL (Postgres) en el .env y descomenta dj-database-url si lo usas.
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Si Railway/Render define DATABASE_URL (Postgres), se usa esa.
+# Si no existe (desarrollo local), cae en SQLite automáticamente.
+DATABASE_URL = config('DATABASE_URL', default='')
+if DATABASE_URL:
+    DATABASES = {'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
