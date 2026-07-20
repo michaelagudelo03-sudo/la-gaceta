@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block contenido %}
+<div class="principal">
+  <div>
+    {% if destacado %}
+    <article class="destacado">
+      <div class="destacado__media">
+        {% if destacado.imagen_portada %}
+          <img src="{{ destacado.imagen_portada.url }}" alt="{{ destacado.titulo }}">
+        {% endif %}
+        {% if destacado.categoria %}<span class="sello">{{ destacado.categoria.nombre }}</span>{% endif %}
+      </div>
+      <div class="kicker">Nota principal</div>
+      <h1><a href="{{ destacado.get_absolute_url }}">{{ destacado.titulo }}</a></h1>
+      <p class="resumen">{{ destacado.resumen }}</p>
+      <div class="meta">{{ destacado.fecha_publicacion|date:"d M Y" }} · {{ destacado.vistas }} lecturas</div>
+    </article>
+    {% endif %}
+
+    {% if pagina.object_list %}
+    <div class="rejilla">
+      {% for articulo in pagina %}
+      <article class="tarjeta">
+        <div class="tarjeta__media">
+          {% if articulo.imagen_portada %}<img src="{{ articulo.imagen_portada.url }}" alt="{{ articulo.titulo }}">{% endif %}
+        </div>
+        {% if articulo.categoria %}<div class="kicker">{{ articulo.categoria.nombre }}</div>{% endif %}
+        <h3><a href="{{ articulo.get_absolute_url }}">{{ articulo.titulo }}</a></h3>
+        <p>{{ articulo.resumen }}</p>
+        <div class="meta">{{ articulo.fecha_publicacion|date:"d M Y" }}</div>
+      </article>
+      {% endfor %}
+    </div>
+    {% elif not destacado %}
+      <div class="vacio">Todavía no hay artículos publicados</div>
+    {% endif %}
+
+    {% if pagina.has_other_pages %}
+    <div class="paginacion">
+      {% if pagina.has_previous %}<a href="?pagina={{ pagina.previous_page_number }}">&larr; Anteriores</a>{% endif %}
+      {% if pagina.has_next %}<a href="?pagina={{ pagina.next_page_number }}">Siguientes &rarr;</a>{% endif %}
+    </div>
+    {% endif %}
+  </div>
+
+  <aside>
+    {% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_SIDEBAR %}
+    <div class="anuncio">
+      <span class="anuncio__etiqueta">Publicidad</span>
+      <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_SIDEBAR }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+    {% endif %}
+    <div class="aside__bloque">
+      <div class="aside__titulo">Categorías</div>
+      {% for cat in categorias %}
+        <div class="aside__item"><a href="{{ cat.get_absolute_url }}">{{ cat.nombre }}</a></div>
+      {% empty %}
+        <p class="meta">Sin categorías todavía</p>
+      {% endfor %}
+    </div>
+  </aside>
+</div>
+{% endblock %}

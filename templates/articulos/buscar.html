@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block titulo %}Buscar: {{ q }} · {{ SITE_NAME }}{% endblock %}
+
+{% block contenido %}
+<div class="kicker">Resultados de búsqueda</div>
+<h1 style="font-family:var(--display); font-size:1.8rem; margin:6px 0 24px;">"{{ q }}"</h1>
+
+{% if resultados %}
+<div class="rejilla">
+  {% for articulo in resultados %}
+  <article class="tarjeta">
+    <div class="tarjeta__media">{% if articulo.imagen_portada %}<img src="{{ articulo.imagen_portada.url }}" alt="{{ articulo.titulo }}">{% endif %}</div>
+    <h3><a href="{{ articulo.get_absolute_url }}">{{ articulo.titulo }}</a></h3>
+    <p>{{ articulo.resumen }}</p>
+    <div class="meta">{{ articulo.fecha_publicacion|date:"d M Y" }}</div>
+  </article>
+  {% endfor %}
+</div>
+{% else %}
+<div class="vacio">{% if q %}No se encontraron artículos{% else %}Escribe algo para buscar{% endif %}</div>
+{% endif %}
+{% endblock %}

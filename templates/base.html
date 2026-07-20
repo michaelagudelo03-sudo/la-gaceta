@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block titulo %}{{ SITE_NAME }}{% endblock %}</title>
+  <meta name="description" content="{% block meta_descripcion %}{{ SITE_DESCRIPTION }}{% endblock %}">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  {% if ADSENSE_CLIENT_ID %}
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ ADSENSE_CLIENT_ID }}" crossorigin="anonymous"></script>
+  {% endif %}
+  {% if GOOGLE_ANALYTICS_ID %}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ GOOGLE_ANALYTICS_ID }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{ GOOGLE_ANALYTICS_ID }}');
+  </script>
+  {% endif %}
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <header class="cabecera">
+    <div class="envoltura">
+      <div class="cabecera__linea">
+        <div>
+          <a href="{% url 'articulos:portada' %}" class="marca">{{ SITE_NAME|slice:":-1" }}<span>{{ SITE_NAME|slice:"-1:" }}</span></a>
+          <div class="eslogan">{{ SITE_DESCRIPTION }}</div>
+        </div>
+        <form class="buscador" action="{% url 'articulos:buscar' %}" method="get">
+          <input type="text" name="q" placeholder="Buscar artículos…" value="{{ request.GET.q }}">
+          <button type="submit">Ir</button>
+        </form>
+      </div>
+      <nav class="nav-categorias">
+        <a href="{% url 'articulos:portada' %}">Portada</a>
+        {% for cat in categorias_nav %}
+          <a href="{% url 'articulos:categoria' cat.slug %}">{{ cat.nombre }}</a>
+        {% endfor %}
+      </nav>
+    </div>
+  </header>
+
+  {% if ADSENSE_CLIENT_ID and ADSENSE_SLOT_HEADER %}
+  <div class="envoltura">
+    <div class="anuncio">
+      <span class="anuncio__etiqueta">Publicidad</span>
+      <ins class="adsbygoogle" style="display:block" data-ad-client="{{ ADSENSE_CLIENT_ID }}" data-ad-slot="{{ ADSENSE_SLOT_HEADER }}" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+  </div>
+  {% endif %}
+
+  <main class="envoltura">
+    {% block contenido %}{% endblock %}
+  </main>
+
+  <footer class="pie">
+    <div class="envoltura">
+      <span>&copy; {% now "Y" %} {{ SITE_NAME }}. Todos los derechos reservados.</span>
+      <span><a href="{% url 'articulos:portada' %}">Portada</a></span>
+    </div>
+  </footer>
+</body>
+</html>

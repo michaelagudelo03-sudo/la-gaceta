@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block titulo %}{{ categoria.nombre }} · {{ SITE_NAME }}{% endblock %}
+
+{% block contenido %}
+<div class="kicker">Categoría</div>
+<h1 style="font-family:var(--display); font-size:2rem; margin:6px 0 24px;">{{ categoria.nombre }}</h1>
+
+{% if pagina.object_list %}
+<div class="rejilla">
+  {% for articulo in pagina %}
+  <article class="tarjeta">
+    <div class="tarjeta__media">{% if articulo.imagen_portada %}<img src="{{ articulo.imagen_portada.url }}" alt="{{ articulo.titulo }}">{% endif %}</div>
+    <h3><a href="{{ articulo.get_absolute_url }}">{{ articulo.titulo }}</a></h3>
+    <p>{{ articulo.resumen }}</p>
+    <div class="meta">{{ articulo.fecha_publicacion|date:"d M Y" }}</div>
+  </article>
+  {% endfor %}
+</div>
+{% if pagina.has_other_pages %}
+<div class="paginacion">
+  {% if pagina.has_previous %}<a href="?pagina={{ pagina.previous_page_number }}">&larr; Anteriores</a>{% endif %}
+  {% if pagina.has_next %}<a href="?pagina={{ pagina.next_page_number }}">Siguientes &rarr;</a>{% endif %}
+</div>
+{% endif %}
+{% else %}
+<div class="vacio">Todavía no hay artículos en esta categoría</div>
+{% endif %}
+{% endblock %}
