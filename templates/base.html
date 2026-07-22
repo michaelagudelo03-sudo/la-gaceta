@@ -26,19 +26,19 @@
     <div class="envoltura">
       <div class="cabecera__linea">
         <div>
-          <a href="{% url 'articulos:portada' %}" class="marca">{{ SITE_NAME|slice:":-1" }}<span>{{ SITE_NAME|slice:"-1:" }}</span></a>
-          <div class="eslogan">{{ SITE_DESCRIPTION }}</div>
+          <a href="{% url 'articulos:portada' %}" class="marca">{{ SITE_NAME }}</a>
         </div>
         <form class="buscador" action="{% url 'articulos:buscar' %}" method="get">
-          <input type="text" name="q" placeholder="Buscar artículos…" value="{{ request.GET.q }}">
+          <input type="text" name="q" placeholder="Buscar…" value="{{ request.GET.q }}">
           <button type="submit">Ir</button>
         </form>
       </div>
       <nav class="nav-categorias">
-        <a href="{% url 'articulos:portada' %}">Portada</a>
+        <a href="{% url 'articulos:portada' %}">Inicio</a>
         {% for cat in categorias_nav %}
           <a href="{% url 'articulos:categoria' cat.slug %}">{{ cat.nombre }}</a>
         {% endfor %}
+        <a href="mailto:contacto@corenova.tech">Contacto</a>
       </nav>
     </div>
   </header>

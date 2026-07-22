@@ -101,8 +101,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # --- Monetización / SEO (personalizables desde .env) ----------------------
-SITE_NAME = config('SITE_NAME', default='Mi Revista')
-SITE_DESCRIPTION = config('SITE_DESCRIPTION', default='Artículos e información')
+SITE_NAME = config('SITE_NAME', default='CoreNova')
+SITE_DESCRIPTION = config('SITE_DESCRIPTION', default='El núcleo de la innovación tecnológica')
 ADSENSE_CLIENT_ID = config('ADSENSE_CLIENT_ID', default='')  # ej: ca-pub-1234567890123456
 ADSENSE_SLOT_HEADER = config('ADSENSE_SLOT_HEADER', default='')
 ADSENSE_SLOT_INARTICLE = config('ADSENSE_SLOT_INARTICLE', default='')

@@ -2,6 +2,54 @@
 {% load static %}
 
 {% block contenido %}
+<section class="hero">
+  <h1 class="hero__titulo">{{ SITE_NAME }}</h1>
+  <p class="hero__tagline">{{ SITE_DESCRIPTION }}</p>
+
+  <div class="hero__tarjetas">
+    <div class="hero__tarjeta">
+      <h4>Últimas noticias</h4>
+      {% if destacado %}
+        <div class="hero__tarjeta-media">
+          {% if destacado.imagen_portada %}<img src="{{ destacado.imagen_portada.url }}" alt="{{ destacado.titulo }}">{% endif %}
+        </div>
+        <a class="enlace-simple" href="{{ destacado.get_absolute_url }}">{{ destacado.titulo }}</a>
+      {% else %}
+        <p class="meta">Aún no hay noticias</p>
+      {% endif %}
+    </div>
+
+    <div class="hero__tarjeta">
+      <h4>Artículos destacados</h4>
+      {% with primero=pagina.object_list.0 %}
+        {% if primero %}
+          <div class="hero__tarjeta-media">
+            {% if primero.imagen_portada %}<img src="{{ primero.imagen_portada.url }}" alt="{{ primero.titulo }}">{% endif %}
+          </div>
+          <a class="enlace-simple" href="{{ primero.get_absolute_url }}">{{ primero.titulo }}</a>
+        {% else %}
+          <p class="meta">Aún no hay artículos</p>
+        {% endif %}
+      {% endwith %}
+    </div>
+
+    <div class="hero__tarjeta">
+      <h4>Categorías</h4>
+      {% for cat in categorias_nav %}
+        <a class="enlace-simple" href="{{ cat.get_absolute_url }}">{{ cat.nombre }}</a>
+      {% empty %}
+        <p class="meta">Sin categorías todavía</p>
+      {% endfor %}
+    </div>
+
+    <div class="hero__tarjeta hero__newsletter">
+      <h4>Recibe novedades</h4>
+      <input type="email" placeholder="Tu correo electrónico" disabled>
+      <button type="button" disabled>Suscribirme</button>
+    </div>
+  </div>
+</section>
+
 <div class="principal">
   <div>
     {% if destacado %}
